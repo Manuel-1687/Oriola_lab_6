@@ -268,8 +268,14 @@ class Database {
             PDO::ATTR_EMULATE_PREPARES   => false,
         );
 
-        if ($driver === 'mysql' && !empty($database_config['ssl_ca']) && defined('PDO::MYSQL_ATTR_SSL_CA')) {
-            $options[PDO::MYSQL_ATTR_SSL_CA] = $database_config['ssl_ca'];
+        if ($driver === 'mysql' && !empty($database_config['ssl_ca'])) {
+            $ssl_ca_attribute = defined('Pdo\\Mysql::ATTR_SSL_CA')
+                ? constant('Pdo\\Mysql::ATTR_SSL_CA')
+                : (defined('PDO::MYSQL_ATTR_SSL_CA') ? constant('PDO::MYSQL_ATTR_SSL_CA') : null);
+
+            if ($ssl_ca_attribute !== null) {
+                $options[$ssl_ca_attribute] = $database_config['ssl_ca'];
+            }
         }
 
         try {

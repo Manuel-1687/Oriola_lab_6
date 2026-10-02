@@ -45,6 +45,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 /** @var object $router **/
 
 $router->get('/', 'Welcome::index');
+$router->match('/', 'Welcome::index', ['HEAD']);
 $router->get('/api/auth/setup-status', 'Products::setup_status');
 $router->post('/api/auth/bootstrap', 'Products::bootstrap');
 $router->post('/api/auth/login', 'Products::login');
