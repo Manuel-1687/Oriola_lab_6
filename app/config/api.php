@@ -98,11 +98,11 @@ $config['refresh_token_key'] = getenv('REFRESH_TOKEN_KEY') ?: '';
 */
 $allowed_origins = [
     getenv('FRONTEND_ORIGIN') ?: null,
-    'https://api-tester.marasigan.dev',
 ];
 
 if ((getenv('APP_ENV') ?: 'development') !== 'production') {
     $allowed_origins[] = 'http://127.0.0.1:5173';
+    $allowed_origins[] = 'http://localhost:5173';
 }
 
 $config['allow_origin'] = array_values(array_filter(array_unique($allowed_origins)));
@@ -124,7 +124,7 @@ $config['refresh_token_table'] = 'refresh_tokens';
 | These are used for JWT Issuer and Audience claims.
 |
 */
-$config['jwt_issuer'] = 'your-app';
+$config['jwt_issuer'] = 'oriola-inventory';
 
 /*
 |--------------------------------------------------------------------------
@@ -134,7 +134,7 @@ $config['jwt_issuer'] = 'your-app';
 |
 */
 
-$config['jwt_audience'] = 'your-app-clients';
+$config['jwt_audience'] = 'oriola-inventory-web';
 
 /*
 |--------------------------------------------------------------------------
