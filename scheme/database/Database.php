@@ -269,12 +269,11 @@ class Database {
         );
 
         if ($driver === 'mysql' && !empty($database_config['ssl_ca'])) {
-            $ssl_ca_attribute = defined('Pdo\\Mysql::ATTR_SSL_CA')
-                ? constant('Pdo\\Mysql::ATTR_SSL_CA')
-                : (defined('PDO::MYSQL_ATTR_SSL_CA') ? constant('PDO::MYSQL_ATTR_SSL_CA') : null);
-
-            if ($ssl_ca_attribute !== null) {
-                $options[$ssl_ca_attribute] = $database_config['ssl_ca'];
+            if (defined('PDO::MYSQL_ATTR_SSL_CA')) {
+                $options[constant('PDO::MYSQL_ATTR_SSL_CA')] = $database_config['ssl_ca'];
+            }
+            if (defined('PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT')) {
+                $options[constant('PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT')] = true;
             }
         }
 
@@ -385,9 +384,7 @@ class Database {
             $t_start = microtime(true);
             $stmt->execute($this->bind_values);
             $t_elapsed = microtime(true) - $t_start;
-            
-            $this->last_id_inserted = $this->db->lastInsertId();
-            
+
             if ($this->query_logging) {
                 $this->query_log[] = [
                     'query'    => $query,

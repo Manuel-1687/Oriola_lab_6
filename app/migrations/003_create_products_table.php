@@ -37,12 +37,10 @@ class Create_products_table
                     'type' => 'DECIMAL',
                     'constraint' => '10,2',
                     'null' => FALSE,
-                    'default' => 0.00,
                 ],
                 'quantity' => [
                     'type' => 'INT',
                     'null' => FALSE,
-                    'default' => 0,
                 ],
                 'created_at' => [
                     'type' => 'TIMESTAMP',

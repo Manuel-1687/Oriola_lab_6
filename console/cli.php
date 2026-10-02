@@ -83,7 +83,6 @@ for ($i = 2; $i < $argc; $i++) {
 }
 
 $input = $positional[0] ?? null;
-$input2 = $positional[1] ?? null;
 
 if (!$command) {
     echo help_text($commands);
@@ -96,7 +95,7 @@ if (!isset($commands[$command])) {
     exit;
 }
 
-call_user_func($commands[$command]['handler'], $input, $flags, $input2);
+call_user_func($commands[$command]['handler'], $input, $flags);
 
 /**
  * Scan app/commands/ for classes that declare:

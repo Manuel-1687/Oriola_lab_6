@@ -260,33 +260,6 @@ Contributions are welcome. To contribute:
 
 Please ensure your code follows the existing style conventions and includes relevant documentation or comments where appropriate.
 
-## Product Management Activity
-
-This backend supplies the LavaLust API for the React app in `../frontend`. Product list and CRUD routes require a Bearer access token. The first administrator can be created once, while the `users` table is empty, through `POST /api/auth/bootstrap`; the React login screen exposes this setup only when `GET /api/auth/setup-status` reports setup is required.
-
-### Local database and migrations
-
-Copy `.env.example` to `.env` in this backend directory and set the database connection and strong, unique `JWT_SECRET` and `REFRESH_TOKEN_KEY` values. Never commit `.env`. For Aiven, use the hostname, port, database, username, password, and CA certificate path shown in the Aiven service connection details. The browser frontend never connects to MySQL directly.
-
-The migration library is disabled unless `MIGRATIONS_ENABLED=true` is set. Temporarily enable it in `.env`, then run these commands from `backend/`:
-
-```sh
-php lava migration status
-php lava migration run
-php lava migration create-migration create_products_table
-php lava migration rollback
-php lava migration rollback-all
-php lava migration refresh
-```
-
-`run` applies pending files in `app/migrations/`: `migrations`, `users`, `refresh_tokens`, and `products`. Rollback, rollback-all, and refresh can drop tables; use them only against a disposable development database. Disable migrations again when finished. The equivalent GET routes are available to authenticated administrators only and should not be enabled for routine production use.
-
-### Render deployment
-
-Create a Render Web Service using the Dockerfile in this directory. Set the service environment variables from `.env.example` in Render, using the Aiven values and a strong `APP_ENV=production`, `CORS_ORIGIN` set to the frontend origin, and `MIGRATIONS_ENABLED=false`. Add the Aiven CA certificate as a Render secret file and set `DB_SSL_CA` to its mounted path if required by the Aiven connection details. Run migrations once with the flag temporarily enabled and then turn it off. Set the frontend's `VITE_API_URL` to the Render service URL before building the frontend.
-
-For local development, start the PHP server from this directory with `php lava serve`; the React app runs from `frontend/` with `npm run dev`.
-
 ---
 
 ## Roadmap

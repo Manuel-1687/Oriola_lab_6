@@ -44,21 +44,24 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 */
 /** @var object $router **/
 
-$router->get('/', 'Welcome::index');
-$router->match('/', 'Welcome::index', ['HEAD']);
-$router->get('/api/auth/setup-status', 'Products::setup_status');
-$router->post('/api/auth/bootstrap', 'Products::bootstrap');
-$router->post('/api/auth/login', 'Products::login');
-$router->get('/api/products', 'Products::index');
-$router->get('/api/products/{id}', 'Products::show');
-$router->post('/api/products', 'Products::store');
-$router->put('/api/products/{id}', 'Products::update');
-$router->patch('/api/products/{id}', 'Products::update');
-$router->delete('/api/products/{id}', 'Products::destroy');
+// Migration Routes
+$router->get('create-migration/{migration_class}', 'MigrationController::create_migration');
+$router->get('migrate', 'MigrationController::migrate');
+$router->get('rollback', 'MigrationController::rollback');
+$router->get('rollback-all', 'MigrationController::rollback_all');
+$router->get('refresh', 'MigrationController::refresh');
+$router->get('status', 'MigrationController::status');
 
-$router->get('/create-migration/{migration_class}', 'MigrationController::create_migration');
-$router->get('/migrate', 'MigrationController::migrate');
-$router->get('/rollback', 'MigrationController::rollback');
-$router->get('/rollback-all', 'MigrationController::rollback_all');
-$router->get('/refresh', 'MigrationController::refresh');
-$router->get('/status', 'MigrationController::status');
+$router->options('api/auth/login', 'ProductsController::login');
+$router->options('api/auth/create', 'ProductsController::create_account');
+$router->options('api/auth/logout', 'ProductsController::logout');
+$router->options('api/products', 'ProductsController::index');
+$router->options('api/products/{id}', 'ProductsController::index');
+$router->post('api/auth/login', 'ProductsController::login');
+$router->post('api/auth/create', 'ProductsController::create_account');
+$router->post('api/auth/logout', 'ProductsController::logout');
+$router->get('api/products', 'ProductsController::index');
+$router->post('api/products', 'ProductsController::store');
+$router->put('api/products/{id}', 'ProductsController::update');
+$router->patch('api/products/{id}', 'ProductsController::update');
+$router->delete('api/products/{id}', 'ProductsController::delete');

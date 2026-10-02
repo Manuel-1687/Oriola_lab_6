@@ -54,7 +54,7 @@ $config['api_helper_enabled'] = TRUE;
 | Used for Payload Token Expiration
 |
 */
-$config['payload_token_expiration'] = (int) (getenv('JWT_TTL') ?: 28800);
+$config['payload_token_expiration'] = 900;
 
 
 /*
@@ -96,7 +96,16 @@ $config['refresh_token_key'] = getenv('REFRESH_TOKEN_KEY') ?: '';
 | already deployed.
 |
 */
-$config['allow_origin'] = getenv('CORS_ORIGIN') ?: '*';
+$allowed_origins = [
+    getenv('FRONTEND_ORIGIN') ?: null,
+    'https://api-tester.marasigan.dev',
+];
+
+if ((getenv('APP_ENV') ?: 'development') !== 'production') {
+    $allowed_origins[] = 'http://127.0.0.1:5173';
+}
+
+$config['allow_origin'] = array_values(array_filter(array_unique($allowed_origins)));
 
 /*
 |--------------------------------------------------------------------------
